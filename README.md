@@ -317,15 +317,32 @@ ptouch-print version v1.5.r12.gf22e844 by Dominic Radermacher
 
 ### Install
 
+#### System wide
+
+Simply invoke make:
+
+```sh
+$ sudo make -C build/ install
+```
+
+Note: this installs and loads udev rules to grant access to USB devices.
+
+#### User installation
+
+First copy the executable and manual files as the current user in the desired destination:
+
 ```sh
 $ prefix=$HOME/software/ptouch-print
 $ mkdir -p "$prefix"/{bin,share/man/man1}
 $ cp build/ptouch-print "$prefix/bin/"
 $ cp ptouch-print.1 "$prefix/share/man/man1"
+```
 
-## Set the SUID flag so 'ptouch-print' can be called without sudo
-$ sudo chmod u+s "$prefix/bin/ptouch-print"
-$ sudo chown root "$prefix/bin/ptouch-print"
+Then install the udev rules, and load them to grant users access to USB devices:
+
+```sh
+$ sudo cp udev/90-usb-ptouch-permissions.rules /etc/udev/rules.d/
+# sudo udevadm control --reload-rules
 ```
 
 Update `PATH` and `MANPATH` as below, e.g. in `~/.bashrc`.
@@ -368,11 +385,13 @@ PT-D450 found on USB bus 1, device 8
 libusb_open error :LIBUSB_ERROR_ACCESS
 ```
 
-This is due to lack of permissions to access the printer over USB. The
-`ptouch-print` command needs to be executed using admin rights, which
-can be done by prefixing the call using `sudo`, e.g. `sudo
-build/ptouch-print --info`.  However, it is more convenient to set the
-SUID flag (explained above), so that any user can run it as-is.
+This is due to lack of permissions to access the printer over USB.
+The user executing the `ptouch-print` command needs to granted 
+access rights, which can be done by installing udev rules as explained above.
+An alternative can be done by prefixing the call using `sudo`, e.g. `sudo
+build/ptouch-print --info`.
+Note: using udev rules is more secure as the binary file may be altered to
+erform malicious thing.
 
 
 ## Appendix
