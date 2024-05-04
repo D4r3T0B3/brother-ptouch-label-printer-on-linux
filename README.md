@@ -342,7 +342,7 @@ Then install the udev rules, and load them to grant users access to USB devices:
 
 ```sh
 $ sudo cp udev/90-usb-ptouch-permissions.rules /etc/udev/rules.d/
-# sudo udevadm control --reload-rules
+$ sudo udevadm control --reload-rules
 ```
 
 Update `PATH` and `MANPATH` as below, e.g. in `~/.bashrc`.
