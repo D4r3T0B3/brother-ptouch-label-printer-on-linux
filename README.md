@@ -491,9 +491,12 @@ Intl_LIBRARY (ADVANCED)
 See also "/home/hb/repositories/other/ptouch-print/build/CMakeFiles/CMakeOutput.log".
 ```
 
-you need to update CMake. I got the above error on Ubuntu 20.04, which
-comes with cmake 3.16.3. After [installing cmake] 3.25.1, and wiping
-the `build/` folder, the compilation succeeded.
+you need to update CMake. I got the above error on Ubuntu 20.04 (April
+2020), which comes with cmake 3.16.3. After [installing cmake] 3.25.1,
+and wiping the `build/` folder, the compilation succeeded.
+
+As a reference, Ubuntu 22.04 (April 2022) comes with cmake 3.22.1, and
+PiOS 12 (November 2023) comes with cmake 3.25.1.
 
 If you have trouble upgrading CMake, then you can always try by
 installing version 1.5-r6 from 2022-11-09 that I know compiles with
