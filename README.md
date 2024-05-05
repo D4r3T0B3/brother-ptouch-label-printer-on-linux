@@ -541,5 +541,5 @@ ptouch-print version v1.5-r6-g71396e8 by Dominic Radermacher
 [LibGD]: https://libgd.github.io/
 [libusb]: https://libusb.info/
 [Lmod]: https://lmod.readthedocs.io/en/latest/
-[modulefiles/ptouch-print/1.5-r9.lua]: modulefiles/ptouch-print/1.5-r9.lua
+[modulefiles/ptouch-print/1.5.lua]: modulefiles/ptouch-print/1.5.lua
 [SUID flag]: https://en.wikipedia.org/wiki/Setuid
