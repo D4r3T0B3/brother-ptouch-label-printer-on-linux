@@ -319,7 +319,7 @@ ptouch-print version v1.5.r20.ga51fcf9 by Dominic Radermacher
 
 ### Install
 
-#### System wide
+#### System-wide installation
 
 Simply invoke make:
 
@@ -327,11 +327,16 @@ Simply invoke make:
 $ sudo make -C build/ install
 ```
 
-Note: this installs and loads udev rules to grant access to USB devices.
+This installs `ptouch-print` centrally on the machine, and loads
+[udev] rules to grant access to USB devices, so that `ptouch-print`
+can be used without `sudo`.
+
 
 #### User installation
 
-First copy the executable and manual files as the current user in the desired destination:
+If you do not want to installed `ptouch-print` system-wide, you can
+copy the executable and manual files as the current user in the
+desired destination:
 
 ```sh
 $ prefix=$HOME/software/ptouch-print
@@ -340,12 +345,16 @@ $ cp build/ptouch-print "$prefix/bin/"
 $ cp ptouch-print.1 "$prefix/share/man/man1"
 ```
 
-Then install the udev rules, and load them to grant users access to USB devices:
+Then install the [udev] rules, and load them to grant users access to
+USB devices:
 
 ```sh
 $ sudo cp udev/90-usb-ptouch-permissions.rules /etc/udev/rules.d/
 $ sudo udevadm control --reload-rules
 ```
+
+_Comment_: You might have to reboot the machine, before this works.
+
 
 Update `PATH` and `MANPATH` as below, e.g. in `~/.bashrc`.
 
@@ -365,12 +374,11 @@ $ module load ptouch-print
 With this in place, the executable and the manual page should be
 found;
 
-
 ```sh
 $ command -v ptouch-print
-/home/hb/software/ptouch-print/bin/ptouch-print
+/home/alice/software/ptouch-print/bin/ptouch-print
 $ man -w ptouch-print
-/home/hb/software/ptouch-print/share/man/man1/ptouch-print.1
+/home/alice/software/ptouch-print/share/man/man1/ptouch-print.1
 ```
 
 
@@ -516,10 +524,10 @@ If you get the following error when compiling:
 CMake Error: The following variables are used in this project, but they are set to NOTFOUND.
 Please set them or make sure they are set and tested correctly in the CMake files:
 Intl_LIBRARY (ADVANCED)
-    linked by target "ptouch-print" in directory /home/hb/repositories/other/ptouch-print
+    linked by target "ptouch-print" in directory /home/alice/repositories/other/ptouch-print
 
 -- Configuring incomplete, errors occurred!
-See also "/home/hb/repositories/other/ptouch-print/build/CMakeFiles/CMakeOutput.log".
+See also "/home/alice/repositories/other/ptouch-print/build/CMakeFiles/CMakeOutput.log".
 ```
 
 you need to update CMake. I got the above error on Ubuntu 20.04 (April
@@ -562,3 +570,4 @@ ptouch-print version v1.5-r6-g71396e8 by Dominic Radermacher
 [Lmod]: https://lmod.readthedocs.io/en/latest/
 [modulefiles/ptouch-print/1.5.lua]: modulefiles/ptouch-print/1.5.lua
 [SUID flag]: https://en.wikipedia.org/wiki/Setuid
+[udev]: https://en.wikipedia.org/wiki/Udev
