@@ -285,7 +285,7 @@ Installation requirements:
  * C compiler, e.g. GCC
  * [CMake] (on Debian/Ubuntu/Pi OS: `sudo apt install cmake`; RedHat/Fedora: `sudo yum install cmake`)
  * [gettext] (on Debian/Ubuntu/Pi OS: `sudo apt install gettext`; RedHat/Fedora: `sudo yum install gettext`)
- * [LibGD] (on Debian/Pi OS: `sudo apt install libgd-dev`; RedHat/Fedora: `sudo yum install gd-devel`)
+ * [LibGD] (on Debian/Ubuntu/Pi OS: `sudo apt install libgd-dev`; RedHat/Fedora: `sudo yum install gd-devel`)
  * [libusb] v1.0 (on Debian/Ubuntu/Pi OS: `sudo apt install libusb-1.0-0-dev`; RedHat/Fedora: `sudo yum install libusb-devel`)
  * ...?
 
