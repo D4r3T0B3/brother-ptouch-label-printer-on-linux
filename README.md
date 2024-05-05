@@ -339,8 +339,7 @@ $ MANPATH="$prefix/share/man:$MANPATH"
 ```
 
 Alternative, if you have [Lmod] set up, you can copy
-[modulefiles/ptouch-print/1.5-r9.lua] to your `MODULEPATH` and just
-do:
+[modulefiles/ptouch-print/1.5.lua] to your `MODULEPATH` and just do:
 
 ```sh
 $ module load ptouch-print
