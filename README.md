@@ -3,7 +3,7 @@
 _NOTE: These are my notes on how to use the `ptouch-print` tool. I am
 **not** the author of `ptouch-print`
 (<https://git.familie-radermacher.ch/linux/ptouch-print.git>) /Henrik
-2023-10-16_
+2024-05-04_
 
 
 These are my notes on how to use a Brother P-touch D450 ([PT-D450])
@@ -80,7 +80,7 @@ other commands:
 
 ```sh
 $ ptouch-print --version
-ptouch-print version v1.5.r12.gf22e844 by Dominic Radermacher
+ptouch-print version v1.5.r20.ga51fcf9 by Dominic Radermacher
 
 $ ptouch-print --list-supported
 Supported printers (some might have quirks)
@@ -95,9 +95,11 @@ Supported printers (some might have quirks)
 	PT-E500
 	PT-P700
 	PT-P750W
+	PT-D410
 	PT-D450
 	PT-D460BT
 	PT-D600
+	PT-D610BT
 	PT-P710BT
 ```
 
@@ -110,10 +112,10 @@ Supported printers (some might have quirks)
 $ ptouch-print --info
 PT-D450 found on USB bus 1, device 8
 maximum printing width for this tape is 120px
-media type = 01
+media type = 01 (Laminated tape)
 media width = 18 mm
-tape color = 01
-text color = 08
+tape color = 01 (White)
+text color = 08 (Black)
 error = 0000
 ```
 
@@ -281,10 +283,10 @@ Installation requirements:
  * Administrative permissions - for setting the [SUID flag] on the built
    `ptouch-print` executable so that any user can run it without `sudo`
  * C compiler, e.g. GCC
- * [CMake] (on Ubuntu/Debian: `sudo apt install cmake`; RedHat/Fedora: `sudo yum install cmake`)
- * [gettext] (on Ubuntu/Debian: `sudo apt install gettext`; RedHat/Fedora: `sudo yum install gettext`)
- * [LibGD] (on Ubuntu/Debian: `sudo apt install libgd-dev`; RedHat/Fedora: `sudo yum install gd-devel`)
- * [libusb] v1.0 (on Ubuntu/Debian: `sudo apt install libusb-1.0-0-dev`; RedHat/Fedora: `sudo yum install libusb-devel`)
+ * [CMake] (on Debian/Ubuntu/Pi OS: `sudo apt install cmake`; RedHat/Fedora: `sudo yum install cmake`)
+ * [gettext] (on Debian/Ubuntu/Pi OS: `sudo apt install gettext`; RedHat/Fedora: `sudo yum install gettext`)
+ * [LibGD] (on Debian/Pi OS: `sudo apt install libgd-dev`; RedHat/Fedora: `sudo yum install gd-devel`)
+ * [libusb] v1.0 (on Debian/Ubuntu/Pi OS: `sudo apt install libusb-1.0-0-dev`; RedHat/Fedora: `sudo yum install libusb-devel`)
  * ...?
 
 
@@ -301,16 +303,16 @@ Run-time requirements:
 $ git clone https://git.familie-radermacher.ch/linux/ptouch-print.git
 $ cd ptouch-print
 $ ./build.sh
--- The C compiler identification is GNU 11.4.0
+-- The C compiler identification is GNU 12.2.0
 ...
 [100%] Linking C executable ptouch-print
 [100%] Built target ptouch-print
 
 $ ls -l build/ptouch-print 
--rwxrwxr-x 1 henrik henrik 85408 Oct 16 11:02 build/ptouch-print
+-rwxr-xr-x 1 pi pi 64328 May  5 06:23 build/ptouch-print
 
 $ build/ptouch-print --version
-ptouch-print version v1.5.r12.gf22e844 by Dominic Radermacher
+ptouch-print version v1.5.r20.ga51fcf9 by Dominic Radermacher
 ```
 
 
@@ -333,7 +335,7 @@ Update `PATH` and `MANPATH` as below, e.g. in `~/.bashrc`.
 ```sh
 $ prefix=$HOME/software/ptouch-print
 $ PATH="$prefix/bin:$PATH"
-$ MANPATH="$prefix/share/man/man1:$MANPATH"
+$ MANPATH="$prefix/share/man:$MANPATH"
 ```
 
 Alternative, if you have [Lmod] set up, you can copy
@@ -381,15 +383,17 @@ SUID flag (explained above), so that any user can run it as-is.
 
 ```sh
 $ cmake --version | head -1
-cmake version 3.22.1
+cmake version 3.25.1
+
+CMake suite maintained and supported by Kitware (kitware.com/cmake).
 
 $ $ git log -1 | head -3
-commit f22e844eed773cc8e9ac876ad102d58dc972bb38
+commit a51fcf98f879b2505ea002d9b7385ba143c2febc
 Author: Dominic Radermacher <dominic@familie-radermacher.ch>
-Date:   Fri Oct 13 12:30:33 2023 +0200
+Date:   Thu Apr 18 09:29:38 2024 +0200
 
-$ ./build.sh
--- The C compiler identification is GNU 11.4.0
+$ ./build.sh 
+-- The C compiler identification is GNU 12.2.0
 -- Detecting C compiler ABI info
 -- Detecting C compiler ABI info - done
 -- Check for working C compiler: /usr/bin/cc - skipped
@@ -397,50 +401,59 @@ $ ./build.sh
 -- Detecting C compile features - done
 -- Found Gettext: /usr/bin/msgmerge (found version "0.21") 
 Found GD: YES
--- Looking for gdImagePng in /usr/lib/x86_64-linux-gnu/libgd.so
--- Looking for gdImagePng in /usr/lib/x86_64-linux-gnu/libgd.so - found
--- Found ZLIB: /usr/lib/x86_64-linux-gnu/libz.so (found version "1.2.11") 
--- Found PNG: /usr/lib/x86_64-linux-gnu/libpng.so (found version "1.6.37") 
--- Looking for gdImageJpeg in /usr/lib/x86_64-linux-gnu/libgd.so
--- Looking for gdImageJpeg in /usr/lib/x86_64-linux-gnu/libgd.so - found
--- Found JPEG: /usr/lib/x86_64-linux-gnu/libjpeg.so (found version "80") 
--- Looking for gdImageGif in /usr/lib/x86_64-linux-gnu/libgd.so
--- Looking for gdImageGif in /usr/lib/x86_64-linux-gnu/libgd.so - found
--- Found GD: /usr/lib/x86_64-linux-gnu/libgd.so
--- Found Git: /usr/bin/git (found version "2.34.1") 
--- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") 
+-- Looking for gdImagePng in /usr/lib/arm-linux-gnueabihf/libgd.so
+-- Looking for gdImagePng in /usr/lib/arm-linux-gnueabihf/libgd.so - found
+-- Found ZLIB: /usr/lib/arm-linux-gnueabihf/libz.so (found version "1.2.13") 
+-- Found PNG: /usr/lib/arm-linux-gnueabihf/libpng.so (found version "1.6.39") 
+-- Looking for gdImageJpeg in /usr/lib/arm-linux-gnueabihf/libgd.so
+-- Looking for gdImageJpeg in /usr/lib/arm-linux-gnueabihf/libgd.so - found
+-- Found JPEG: /usr/lib/arm-linux-gnueabihf/libjpeg.so (found version "62") 
+-- Looking for gdImageGif in /usr/lib/arm-linux-gnueabihf/libgd.so
+-- Looking for gdImageGif in /usr/lib/arm-linux-gnueabihf/libgd.so - found
+-- Found GD: /usr/lib/arm-linux-gnueabihf/libgd.so
+-- Found Git: /usr/bin/git (found version "2.39.2") 
+-- Found PkgConfig: /usr/bin/pkg-config (found version "1.8.1") 
 -- Found Intl: built in to C library  
 -- Checking for module 'libusb-1.0'
---   Found libusb-1.0, version 1.0.25
+--   Found libusb-1.0, version 1.0.26
 -- Configuring done
 -- Generating done
--- Build files have been written to: /home/henrik/repositories/other/ptouch-print/build
--- Found Git: /usr/bin/git (found version "2.34.1") 
+-- Build files have been written to: /home/pi/repositories/other/ptouch-print/build
+-- Found Git: /usr/bin/git (found version "2.39.2") 
 [  0%] Built target git-version
 [ 33%] Building C object CMakeFiles/ptouch-print.dir/src/libptouch.c.o
-/home/henrik/repositories/other/ptouch-print/src/libptouch.c: In function ‘ptouch_send_precut_cmd’:
-/home/henrik/repositories/other/ptouch-print/src/libptouch.c:252:35: warning: pointer targets in passing argument 2 of ‘ptouch_send’ differ in signedness [-Wpointer-sign]
-  252 |         return ptouch_send(ptdev, cmd, sizeof(cmd)-1);
-      |                                   ^~~
-      |                                   |
-      |                                   char *
-/home/henrik/repositories/other/ptouch-print/src/libptouch.c:168:44: note: expected ‘uint8_t *’ {aka ‘unsigned char *’} but argument is of type ‘char *’
-  168 | int ptouch_send(ptouch_dev ptdev, uint8_t *data, size_t len)
-      |                                   ~~~~~~~~~^~~~
+In file included from /home/pi/repositories/other/ptouch-print/src/libptouch.c:30:
+/home/pi/repositories/other/ptouch-print/src/libptouch.c: In function ‘ptouch_send’:
+/home/pi/repositories/other/ptouch-print/include/gettext.h:67:41: warning: format ‘%ld’ expects argument of type ‘long int’, but argument 4 has type ‘size_t’ {aka ‘unsigned int’} [-Wformat=]
+   67 | # define gettext(Msgid) ((const char *) (Msgid))
+      |                                         ^
+/home/pi/repositories/other/ptouch-print/src/libptouch.c:33:14: note: in expansion of macro ‘gettext’
+   33 | #define _(s) gettext(s)
+      |              ^~~~~~~
+/home/pi/repositories/other/ptouch-print/src/libptouch.c:182:33: note: in expansion of macro ‘_’
+  182 |                 fprintf(stderr, _("write error: could send only %i of %ld bytes\n"), tx, len);
+      |                                 ^
 [ 66%] Building C object CMakeFiles/ptouch-print.dir/src/ptouch-print.c.o
-In file included from /home/henrik/repositories/other/ptouch-print/src/ptouch-print.c:32:
-/home/henrik/repositories/other/ptouch-print/src/ptouch-print.c: In function ‘main’:
-/home/henrik/repositories/other/ptouch-print/include/gettext.h:88:25: warning: statement with no effect [-Wunused-value]
+/home/pi/repositories/other/ptouch-print/src/ptouch-print.c: In function ‘print_img’:
+/home/pi/repositories/other/ptouch-print/src/ptouch-print.c:95:30: warning: format ‘%ld’ expects argument of type ‘long int’, but argument 2 has type ‘size_t’ {aka ‘unsigned int’} [-Wformat=]
+   95 |         printf("max_pixels=%ld, offset=%d\n", max_pixels, offset);
+      |                            ~~^                ~~~~~~~~~~
+      |                              |                |
+      |                              long int         size_t {aka unsigned int}
+      |                            %d
+In file included from /home/pi/repositories/other/ptouch-print/src/ptouch-print.c:32:
+/home/pi/repositories/other/ptouch-print/src/ptouch-print.c: In function ‘main’:
+/home/pi/repositories/other/ptouch-print/include/gettext.h:88:25: warning: statement with no effect [-Wunused-value]
    88 |     ((void) (Domainname), (const char *) (Dirname))
       |     ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
-/home/henrik/repositories/other/ptouch-print/src/ptouch-print.c:496:9: note: in expansion of macro ‘bindtextdomain’
-  496 |         bindtextdomain("ptouch-print", "/usr/share/locale/");
+/home/pi/repositories/other/ptouch-print/src/ptouch-print.c:512:9: note: in expansion of macro ‘bindtextdomain’
+  512 |         bindtextdomain("ptouch-print", "/usr/share/locale/");
       |         ^~~~~~~~~~~~~~
-/home/henrik/repositories/other/ptouch-print/include/gettext.h:85:34: warning: statement with no effect [-Wunused-value]
+/home/pi/repositories/other/ptouch-print/include/gettext.h:85:34: warning: statement with no effect [-Wunused-value]
    85 | # define textdomain(Domainname) ((const char *) (Domainname))
       |                                 ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/home/henrik/repositories/other/ptouch-print/src/ptouch-print.c:497:9: note: in expansion of macro ‘textdomain’
-  497 |         textdomain("ptouch-print");
+/home/pi/repositories/other/ptouch-print/src/ptouch-print.c:513:9: note: in expansion of macro ‘textdomain’
+  513 |         textdomain("ptouch-print");
       |         ^~~~~~~~~~
 [100%] Linking C executable ptouch-print
 [100%] Built target ptouch-print
