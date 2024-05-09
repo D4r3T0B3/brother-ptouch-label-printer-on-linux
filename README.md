@@ -119,7 +119,6 @@ text color = 08 (Black)
 error = 0000
 ```
 
-
 ### Generate PNG image
 
 ```sh
@@ -133,6 +132,9 @@ johndoe.png: PNG image data, 467 x 120, 1-bit colormap, non-interlaced
 ```
 
 <img src="images/johndoe.png" style="border: 1px solid #666"/>
+
+Note that `ptouch-print` has to be able to communicate with the
+printer even if it is only generating a PNG file.
 
 
 ### Print PNG image
